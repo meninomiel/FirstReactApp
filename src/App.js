@@ -1,20 +1,54 @@
-import React from 'react';
+import React, {Component} from 'react';
 import './css/pure-min.css';
 import './css/side-menu.css';
+import $ from 'jquery';
 
-function App() {
-  return (
-    <div id="layout">
+class App extends Component {
+  constructor(){
+    super();
+    this.state = {lista:[]};    
+  }
 
+  componentDidMount(){
+    $.ajax({
+      url:"https://cdc-react.herokuapp.com/api/autores",
+      dataType: 'JSON',
+      success: resposta => this.setState({lista: resposta})
+    });
+  }
+
+  enviaFormulario(evento){
+    evento.preventDefault();
+    
+    $.ajax({
+      url:"https://cdc-react.herokuapp.com/api/autores",
+      dataType: "JSON",
+      contentType: "aplication/json",
+      type: "post",
+      data: JSON.stringify({nome: this.lista.nome, email: this.lista.email, senha: this.lista.senha}),
+      success: (resposta) => console.log(resposta),
+      error: (resposta) => console.log("erro")
+    });
+  }
+  
+  //parei aqui
+  setProp(evento){
+    let name = evento.name;
+    this.setState({name: evento.target.value});
+    console.log(this.state + evento)
+  }
+
+  render(){
+    return (
+      <div id="layout">
       <a href="#menu" id="menuLink" className="menu-link">
-
         <span></span>
       </a>
 
       <div id="menu">
         <div className="pure-menu">
           <a className="pure-menu-heading" href="#">Company</a>
-
+          
           <ul className="pure-menu-list">
             <li className="pure-menu-item"><a href="#" className="pure-menu-link">Home</a></li>
             <li className="pure-menu-item"><a href="#" className="pure-menu-link">Autor</a></li>
@@ -29,18 +63,18 @@ function App() {
         </div>
         <div className="content" id="content">
           <div className="pure-form pure-form-aligned">
-            <form className="pure-form pure-form-aligned">
+            <form className="pure-form pure-form-aligned" onSubmit={this.enviaFormulario.bind(this)} method="POST">
               <div className="pure-control-group">
                 <label htmlFor="nome">Nome</label>
-                <input id="nome" type="text" name="nome" value="" />
+                <input id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setProp.bind(this)}/>
               </div>
               <div className="pure-control-group">
                 <label htmlFor="email">Email</label>
-                <input id="email" type="email" name="email" value="" />
+                <input id="email" type="email" name="email" value={this.state.email} onChange={this.setProp.bind(this)}/>
               </div>
               <div className="pure-control-group">
                 <label htmlFor="senha">Senha</label>
-                <input id="senha" type="password" name="senha" />
+                <input id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setProp.bind(this)}/>
               </div>
               <div className="pure-control-group">
                 <label></label>
@@ -58,19 +92,24 @@ function App() {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Alberto</td>
-                  <td>alberto.souza@caelum.com.br</td>
-                </tr>
+                {
+                  this.state.lista.map(function(autor){
+                    return (
+                      <tr key={autor.id}>
+                        <td>{autor.nome}</td>
+                        <td>{autor.email}</td>
+                      </tr>
+                    )                  
+                  })
+                }
               </tbody>
             </table>
           </div>
         </div>
       </div>
-
-
     </div>
-  );
+    )
+  }
 }
 
 export default App;

@@ -6,12 +6,12 @@ import $ from 'jquery';
 class App extends Component {
   constructor(){
     super();
-    this.state = {lista:[]};    
+    this.state = {lista:[], nome:'', email:'', senha:''};    
   }
 
   componentDidMount(){
     $.ajax({
-      url:"https://cdc-react.herokuapp.com/api/autores",
+      url:"http://localhost:8080/api/autores",
       dataType: 'JSON',
       success: resposta => this.setState({lista: resposta})
     });
@@ -19,31 +19,36 @@ class App extends Component {
 
   enviaFormulario(evento){
     evento.preventDefault();
-    
+    console.log(evento);
+
     $.ajax({
-      url:"https://cdc-react.herokuapp.com/api/autores",
-      dataType: "JSON",
-      contentType: "aplication/json",
+      url:"http://localhost:8080/api/autores",
+      dataType: "json",
+      contentType: "application/json",
       type: "post",
-      data: JSON.stringify({nome: this.lista.nome, email: this.lista.email, senha: this.lista.senha}),
+      data: JSON.stringify({nome: this.state.nome, email: this.state.email, senha: this.state.senha}),
       success: (resposta) => console.log(resposta),
       error: (resposta) => console.log("erro")
     });
   }
   
   //parei aqui
-  setProp(evento){
-    let name = evento.name;
-    this.setState({name: evento.target.value});
-    console.log(this.state + evento)
+  setNome(evento){
+    this.setState({nome: evento.target.value});
+  }
+  setEmail(evento){
+    this.setState({email: evento.target.value});
+  }
+  setSenha(evento){
+    this.setState({senha: evento.target.value});
   }
 
   render(){
     return (
       <div id="layout">
-      <a href="#menu" id="menuLink" className="menu-link">
-        <span></span>
-      </a>
+        <a href="#menu" id="menuLink" className="menu-link">
+          <span></span>
+        </a>
 
       <div id="menu">
         <div className="pure-menu">
@@ -66,15 +71,15 @@ class App extends Component {
             <form className="pure-form pure-form-aligned" onSubmit={this.enviaFormulario.bind(this)} method="POST">
               <div className="pure-control-group">
                 <label htmlFor="nome">Nome</label>
-                <input id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setProp.bind(this)}/>
+                <input id="nome" type="text" name="nome" value={this.state.nome} onChange={this.setNome.bind(this)}/>
               </div>
               <div className="pure-control-group">
                 <label htmlFor="email">Email</label>
-                <input id="email" type="email" name="email" value={this.state.email} onChange={this.setProp.bind(this)}/>
+                <input id="email" type="email" name="email" value={this.state.email} onChange={this.setEmail.bind(this)}/>
               </div>
               <div className="pure-control-group">
                 <label htmlFor="senha">Senha</label>
-                <input id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setProp.bind(this)}/>
+                <input id="senha" type="password" name="senha" value={this.state.senha} onChange={this.setSenha.bind(this)}/>
               </div>
               <div className="pure-control-group">
                 <label></label>

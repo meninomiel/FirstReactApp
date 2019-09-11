@@ -19,7 +19,6 @@ class App extends Component {
 
   enviaFormulario(evento){
     evento.preventDefault();
-    console.log(evento);
 
     $.ajax({
       url:"http://localhost:8080/api/autores",
@@ -27,12 +26,13 @@ class App extends Component {
       contentType: "application/json",
       type: "post",
       data: JSON.stringify({nome: this.state.nome, email: this.state.email, senha: this.state.senha}),
-      success: (resposta) => console.log(resposta),
-      error: (resposta) => console.log("erro")
+      success: resposta => this.setState({lista:resposta}),
+      error: resposta => console.log("erro")
     });
+
+    
   }
   
-  //parei aqui
   setNome(evento){
     this.setState({nome: evento.target.value});
   }

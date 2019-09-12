@@ -20,7 +20,7 @@ class FormAutor extends Component {
             type: "post",
             data: JSON.stringify({nome: this.state.nome, email: this.state.email, senha: this.state.senha}),
             success: novaListagem => PubSub.publish('atualiza-lista-autores', novaListagem),
-            error: resposta => console.log("erro")
+            error: resposta => console.log(resposta)
         });    
     }
       

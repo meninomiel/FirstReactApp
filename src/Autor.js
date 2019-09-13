@@ -27,15 +27,15 @@ class FormAutor extends Component {
         });    
     }
       
-      setNome(evento){
-        this.setState({nome: evento.target.value});
-      }
-      setEmail(evento){
-        this.setState({email: evento.target.value});
-      }
-      setSenha(evento){
-        this.setState({senha: evento.target.value});
-      }
+    setNome(evento){
+    this.setState({nome: evento.target.value});
+    }
+    setEmail(evento){
+    this.setState({email: evento.target.value});
+    }
+    setSenha(evento){
+    this.setState({senha: evento.target.value});
+    }
 
     render(){
         return(
@@ -102,8 +102,13 @@ export default class AutorBox extends Component {
     render(){
         return(
             <div>
-                <FormAutor atualizaLista={this.atualizaLista} />
-                <TabelaAutor lista={this.state.lista} />
+                <div className="header">
+                    <h1>Cadastro Autor</h1>
+                </div>
+                <div className="content" id="content">
+                    <FormAutor atualizaLista={this.atualizaLista} />
+                    <TabelaAutor lista={this.state.lista} />
+                </div>                
             </div>
         );
     }

@@ -19,7 +19,10 @@ class FormAutor extends Component {
             contentType: "application/json",
             type: "post",
             data: JSON.stringify({nome: this.state.nome, email: this.state.email, senha: this.state.senha}),
-            success: novaListagem => PubSub.publish('atualiza-lista-autores', novaListagem),
+            success: novaListagem => {
+                PubSub.publish('atualiza-lista-autores', novaListagem);
+                this.setState({nome:'',email:'',senha:''})
+            },
             error: resposta => console.log(resposta)
         });    
     }
